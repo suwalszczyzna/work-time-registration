@@ -1,5 +1,5 @@
 <nav class="menubar">
-    <span class="menubar__logo">Czas pracy</span>
+    <span class="menubar__logo"><a href="{% url 'home' %}">Czas pracy</a></span>
     <ul class="menubar__menu">
         <li class="menubar__menu__item">
             <a href="#"><i class="fas fa-plus-circle"></i>Nowy wniosek</a>
@@ -10,9 +10,11 @@
         <li class="menubar__menu__item">
             <a href="#"><i class="fas fa-align-left"></i>Raport sald</a>
         </li>
+        {% if request.user.is_authenticated  %}
         <li class="menubar__menu__item">
-            <a href="#"><i class="fas fa-ellipsis-h"></i>Więcej</a>
+            <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>{{ request.user }}, wyloguj</a>
         </li>
+        {% endif %}
     </ul>
     <div class="menubar__burger">
         <div class="line1"></div>
