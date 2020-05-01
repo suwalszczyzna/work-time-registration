@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{% static "style.css" %}"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap"
+            rel="stylesheet"
+    />
+    <script
+            src="https://kit.fontawesome.com/3a7c72b6fb.js"
+            crossorigin="anonymous"
+    ></script>
+    <title>Czas pracy</title>
+</head>
+<body>
+<div class="container">
+    {% include 'menubar.html' %}
+    {% block content %}
+    {% endblock %}
+</div>
+<script src="{% static "script.js" %}"></script>
+</body>
+</html>

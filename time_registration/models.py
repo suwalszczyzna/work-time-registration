@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 import datetime
 
 User = get_user_model()
@@ -25,6 +26,6 @@ class Employee(models.Model):
 class TimeRegistration(models.Model):
     arrival = models.TimeField(null=True, blank=True)
     leaving = models.TimeField(null=True, blank=True)
-    date = models.DateField(default=datetime.date.today())
+    date = models.DateField(default=timezone.now())
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, null=False)
 
