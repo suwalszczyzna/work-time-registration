@@ -25,7 +25,7 @@ class Company(models.Model):
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    company = models.OneToOneField(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     working_hours = models.IntegerField(default=8)
 
     def __str__(self):
