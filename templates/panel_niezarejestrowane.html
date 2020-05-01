@@ -1,7 +1,10 @@
 <h4>Niezarejestrowano przyjścia</h4>
 <div class="panel__main-buttons">
-    <button class="panel__button primary-button">
-        <i class="fas fa-briefcase"></i>
-        <span>Przyjście do pracy</span>
-    </button>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="panel__button primary-button" type="submit" name="arrival">
+            <i class="fas fa-briefcase"></i>
+            <span>Przyjście do pracy</span>
+        </button>
+    </form>
 </div>

@@ -26,7 +26,7 @@ def index(request):
     plan_leave_time = ''
     time_registration: TimeRegistration = TimeRegistration.objects.filter(
         employee__user_id__exact=request.user.id,
-        date__exact=datetime.date(timezone.now())).first()
+        date__exact=timezone.datetime.date(datetime.now())).first()
 
     if time_registration:
         plan_leave_time = plan_leaving_hours(request, time_registration)
@@ -34,6 +34,18 @@ def index(request):
         'time_registration': time_registration,
         'plan_leaving_time': plan_leave_time
     }
+    if 'arrival' in request.POST:
+        employee = get_employee_by_userid(request.user.id)
+        new_time_registration = TimeRegistration.objects.create(arrival=timezone.datetime.time(datetime.now()),
+                                                                employee_id=employee.id)
+        new_time_registration.save()
+        return redirect('home')
+    if 'add_short_brake' in request.POST:
+        print('add_short_brake')
+    if 'go_home' in request.POST:
+        time_registration.leaving = timezone.datetime.time(datetime.now())
+        time_registration.save()
+        return redirect('home')
     return render(request, 'panel.html', context)
 
 

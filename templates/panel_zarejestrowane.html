@@ -15,12 +15,20 @@
     </div>
 </div>
 <div class="panel__main-buttons">
-    <button class="panel__button primary-button" disabled>
-        <i class="fas fa-business-time"></i>
-        <span>Dodaj krótką przerwę</span>
-    </button>
-    <button class="panel__button primary-button">
-        <i class="fas fa-sign-out-alt"></i>
-        <span>Wyjście z pracy</span>
-    </button>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="panel__button primary-button" type="submit" name="add_short_brake" disabled>
+            <i class="fas fa-business-time"></i>
+            <span>Dodaj krótką przerwę</span>
+        </button>
+        <button
+                class="panel__button primary-button"
+                type="submit"
+                name="go_home"
+                {% if time_registration.leaving %} disabled {% endif %}
+        >
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Wyjście z pracy</span>
+        </button>
+    </form>
 </div>

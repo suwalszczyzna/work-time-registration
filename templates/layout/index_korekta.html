@@ -1,82 +1,39 @@
-<!DOCTYPE html>
-<html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../static/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://kit.fontawesome.com/3a7c72b6fb.js"
-      crossorigin="anonymous"
-    ></script>
-    <title>Czas pracy</title>
-  </head>
-  <body>
-    <div class="container">
-      <nav class="menubar">
-        <span class="menubar__logo">Czas pracy</span>
-        <ul class="menubar__menu">
-          <li class="menubar__menu__item">
-            <a href="#"><i class="fas fa-plus-circle"></i>Nowy wniosek</a>
-          </li>
-          <li class="menubar__menu__item">
-            <a href="#"><i class="fas fa-clipboard-check"></i>Moje wnioski</a>
-          </li>
-          <li class="menubar__menu__item">
-            <a href="#"><i class="fas fa-align-left"></i>Raport sald</a>
-          </li>
-          <li class="menubar__menu__item">
-            <a href="#"><i class="fas fa-ellipsis-h"></i>Więcej</a>
-          </li>
-        </ul>
-        <div class="menubar__burger">
-          <div class="line1"></div>
-          <div class="line2"></div>
-          <div class="line3"></div>
-        </div>
-      </nav>
-      <section class="panel space-between">
-        <h1 class="panel__clock">08:20</h1>
-        <h4 class="grey">14.03.2020</h4>
+<section class="panel space-between">
+    <h1 class="panel__clock">08:20</h1>
+    <h4 class="grey">14.03.2020</h4>
 
-        <div class="panel__form">
-          <h3>Korekta:</h3>
+    <div class="panel__form">
+        <h3>Korekta:</h3>
 
-          <div class="panel__input-time">
+        <div class="panel__input-time">
             <label for="start-work-date"><h4>Przyjście:</h4></label>
             <input
-              type="time"
-              id="start-work-date"
-              name="start-work-date"
-              value="08:00"
+                    type="time"
+                    id="start-work-date"
+                    name="start-work-date"
+                    value="08:00"
+                    disabled
             />
-          </div>
-          <div class="panel__input-time">
+        </div>
+        <div class="panel__input-time">
             <label for="end-work-date"><h4>Wyjście:</h4></label>
             <input
-              type="time"
-              id="end-work-date"
-              name="end-work-date"
-              value="16:00"
+                    type="time"
+                    id="end-work-date"
+                    name="end-work-date"
+                    value="16:00"
             />
-          </div>
         </div>
+    </div>
 
-        <div class="panel__decision-buttons">
-          <button class="panel__button primary-button ok-button">
+    <div class="panel__decision-buttons">
+        <button class="panel__button primary-button ok-button">
             <i class="fas fa-check-circle"></i>
             <span>Zapisz</span>
-          </button>
-          <button class="panel__button primary-button cancel-button">
+        </button>
+        <button class="panel__button primary-button cancel-button">
             <i class="fas fa-times-circle"></i>
             <span>Anuluj</span>
-          </button>
-        </div>
-      </section>
+        </button>
     </div>
-    <script src="../../static/script.js"></script>
-  </body>
-</html>
+</section>
