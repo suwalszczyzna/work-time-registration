@@ -2,8 +2,8 @@
 {% block content %}
 
     <section class="panel">
-        <h1 class="panel__clock">08:20</h1>
-        <h4 class="grey">14.03.2020</h4>
+        <h1 class="panel__clock">{% now "H:i" %}</h1>
+        <h4 class="grey">{% now "d.m.Y" %}</h4>
         <h4>Niezarejestrowano przyjścia</h4>
         <div class="panel__main-buttons">
             <button class="panel__button primary-button">

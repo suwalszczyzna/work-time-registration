@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+
+    <section class="panel">
+        <h3>Register</h3>
+        <div class="panel__form">
+            {{ form.errors }}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            <div class="panel__form-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="panel__column">
+                        <h4>{{ form.username.label }}</h4>
+                        {{ form.username }}
+                        <h4>{{ form.email.label }}</h4>
+                        {{ form.email }}
+                        <h4>{{ form.password1.label }}</h4>
+                        {{ form.password1 }}
+                        <h4>{{ form.password2.label }}</h4>
+                        {{ form.password2 }}
+                        <button class="primary-button" type="submit">Zarejestruj konto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
