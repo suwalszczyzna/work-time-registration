@@ -2,13 +2,21 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.core.exceptions import MultipleObjectsReturned
+import datetime
 
 from .forms import CreateUserForm
+from .models import TimeRegistration
 
 
 @login_required(login_url='login')
 def index(request):
-    context = {}
+    time_registration = TimeRegistration.objects.filter(employee__user_id__exact=request.user.id,
+                                                        date__exact=datetime.datetime.date(timezone.now()))\
+                                                .first()
+
+    context = {'time_registration': time_registration}
     return render(request, 'panel.html', context)
 
 
