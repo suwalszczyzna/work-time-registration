@@ -4,19 +4,36 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.core.exceptions import MultipleObjectsReturned
-import datetime
+from datetime import date, datetime, time, timedelta
 
 from .forms import CreateUserForm
-from .models import TimeRegistration
+from .models import TimeRegistration, Employee
+
+
+def get_employee_by_userid(user_id):
+    return Employee.objects.get(user_id__exact=user_id)
+
+
+def plan_leaving_hours(request, time_registration):
+    employee = get_employee_by_userid(request.user.id)
+    working_hours = employee.working_hours
+    plan_time = datetime.combine(time_registration.date, time_registration.arrival) + timedelta(hours=working_hours)
+    return plan_time.time()
 
 
 @login_required(login_url='login')
 def index(request):
-    time_registration = TimeRegistration.objects.filter(employee__user_id__exact=request.user.id,
-                                                        date__exact=datetime.datetime.date(timezone.now()))\
-                                                .first()
+    plan_leave_time = ''
+    time_registration: TimeRegistration = TimeRegistration.objects.filter(
+        employee__user_id__exact=request.user.id,
+        date__exact=datetime.date(timezone.now())).first()
 
-    context = {'time_registration': time_registration}
+    if time_registration:
+        plan_leave_time = plan_leaving_hours(request, time_registration)
+    context = {
+        'time_registration': time_registration,
+        'plan_leaving_time': plan_leave_time
+    }
     return render(request, 'panel.html', context)
 
 

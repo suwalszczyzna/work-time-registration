@@ -4,20 +4,13 @@
     <section class="panel">
         <h1 class="panel__clock">{% now "H:i" %}</h1>
         <h4 class="grey">{% now "d.m.Y" %}</h4>
-        <h4>Niezarejestrowano przyjścia</h4>
-        <div class="panel__main-buttons">
-            <button class="panel__button primary-button">
-                <i class="fas fa-briefcase"></i>
-                <span>Przyjście do pracy</span>
-            </button>
-            <button class="panel__button primary-button">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Wyjście z pracy</span>
-            </button>
-        </div>
-
+        {% if time_registration %}
+            {% include 'panel_zarejestrowane.html' %}
+        {% else %}
+            {% include 'panel_niezarejestrowane.html' %}
+        {% endif %}
         <div class="panel__option-buttons">
-            <button class="panel__button primary-button" disabled>
+            <button class="panel__button primary-button">
                 <i class="fas fa-pencil-alt"></i>
                 <span>Korekta</span>
             </button>
