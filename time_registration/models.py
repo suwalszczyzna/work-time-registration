@@ -36,6 +36,6 @@ class TimeRegistration(models.Model):
     arrival = models.TimeField(null=True, blank=True)
     leaving = models.TimeField(null=True, blank=True)
     date = models.DateField(default=timezone.now())
-    employee = models.OneToOneField(Employee, on_delete=models.CASCADE, null=False)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=False)
     brakes = models.ManyToManyField(Brake, null=True, blank=True)
 
