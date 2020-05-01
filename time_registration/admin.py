@@ -2,7 +2,12 @@ from django.contrib import admin
 
 from time_registration.models import Employee, Company, TimeRegistration
 
-admin.site.register(Employee)
+
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company', 'working_hours')
+
+
+admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Company)
 
 
