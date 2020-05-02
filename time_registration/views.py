@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from datetime import datetime, timedelta
 
@@ -9,8 +9,28 @@ from .forms import CreateUserForm
 from .models import TimeRegistration, Employee
 
 
+def is_employed(user_id):
+    employee = get_employee_by_userid(user_id)
+    if employee:
+        return True
+    else:
+        return False
+
+
+emp_login_required = user_passes_test(lambda u: True if is_employed(u.id) else False, login_url='login')
+
+
+def employee_login_required(view_func):
+    decorated_view_func = login_required(emp_login_required(view_func), login_url='login')
+    return decorated_view_func
+
+
 def get_employee_by_userid(user_id):
-    return Employee.objects.get(user_id__exact=user_id)
+    try:
+        employee = Employee.objects.get(user_id__exact=user_id)
+    except Employee.DoesNotExist:
+        employee = None
+    return employee
 
 
 def plan_leaving_hours(request, time_registration):
@@ -20,7 +40,7 @@ def plan_leaving_hours(request, time_registration):
     return plan_time.time()
 
 
-@login_required(login_url='login')
+@employee_login_required
 def index(request):
     plan_leave_time = ''
     time_registration: TimeRegistration = TimeRegistration.objects.filter(
