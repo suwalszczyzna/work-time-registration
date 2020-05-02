@@ -5,9 +5,9 @@
         <h1 class="panel__clock">{% now "H:i" %}</h1>
         <h4 class="grey">{% now "d.m.Y" %}</h4>
         {% if time_registration %}
-            {% include 'panel_zarejestrowane.html' %}
+            {% include 'panel_registered.html' %}
         {% else %}
-            {% include 'panel_niezarejestrowane.html' %}
+            {% include 'panel_unregistered.html' %}
         {% endif %}
         <div class="panel__option-buttons">
             <button class="panel__button primary-button">
