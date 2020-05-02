@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.core.exceptions import MultipleObjectsReturned
 from datetime import date, datetime, time, timedelta
 
 from .forms import CreateUserForm
@@ -61,6 +60,26 @@ def register(request):
             form.clean()
     context = {'form': form}
     return render(request, 'register.html', context)
+
+
+def correction(request, pk):
+    time_registration = TimeRegistration.objects.get(pk=pk)
+
+    if request.method == "POST":
+        if 'save' in request.POST:
+            arrival = request.POST.get('arrival')
+            leaving = request.POST.get('leaving')
+            if arrival:
+                time_registration.arrival = arrival
+            if leaving:
+                time_registration.leaving = leaving
+            time_registration.save()
+        elif 'delete' in request.POST:
+            time_registration.delete()
+        return redirect('home')
+
+    context = {'time_registration': time_registration}
+    return render(request, 'correction.html', context)
 
 
 def login_page(request):
