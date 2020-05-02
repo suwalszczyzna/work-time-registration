@@ -4,9 +4,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from datetime import datetime, timedelta
+from django.shortcuts import get_object_or_404
 
 from .forms import CreateUserForm
 from .models import TimeRegistration, Employee
+
+
+def is_register_owner(user_id, time_registration):
+    employee = get_employee_by_userid(user_id)
+
+    if time_registration.employee.id == employee.id:
+        return True
+    else:
+        return False
 
 
 def is_employed(user_id):
@@ -69,7 +79,6 @@ def index(request):
 
 
 def register(request):
-
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -82,8 +91,12 @@ def register(request):
     return render(request, 'register.html', context)
 
 
+@employee_login_required
 def correction(request, pk):
-    time_registration = TimeRegistration.objects.get(pk=pk)
+    time_registration = get_object_or_404(TimeRegistration, pk=pk)
+
+    if not is_register_owner(request.user.id, time_registration):
+        return redirect('login')
 
     if request.method == "POST":
         if 'save' in request.POST:
@@ -103,7 +116,6 @@ def correction(request, pk):
 
 
 def login_page(request):
-
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
