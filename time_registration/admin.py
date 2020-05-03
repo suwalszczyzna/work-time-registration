@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from time_registration.models import Employee, Company, TimeRegistration
+from time_registration.models import Employee, Company, TimeRegistration, Brake
 
 
 class EmployeeAdmin(admin.ModelAdmin):

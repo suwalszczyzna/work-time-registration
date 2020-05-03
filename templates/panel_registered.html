@@ -7,31 +7,41 @@
 
         {% if not time_registration.leaving %}
             <h4>Planowane wyjście:</h4>
-            <h4 class="grey">{{ plan_leaving_time }}</h4>
+            <h4 class="grey">{{ time_registration.plan_leaving }}
+                {% if time_registration.brakes > 0 %}
+                    (w tym przerwy: {{ time_registration.brakes }} min.)
+                {% endif %}
+            </h4>
         {% else %}
             <h4>Wyjście:</h4>
             <h4>{{ time_registration.leaving }}</h4>
         {% endif %}
     </div>
 </div>
-<div class="panel__main-buttons">
-    <form method="POST">
-        {% csrf_token %}
-        <button class="panel__button primary-button" type="submit" name="add_short_brake" disabled>
-            <i class="fas fa-business-time"></i>
-            <span>Dodaj krótką przerwę</span>
-        </button>
-        <button
-                class="panel__button primary-button"
-                type="submit"
-                name="go_home"
-                {% if time_registration.leaving %} disabled {% endif %}
-        >
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Wyjście z pracy</span>
-        </button>
-    </form>
-</div>
+{% if not time_registration.leaving %}
+    <div class="panel__main-buttons">
+        <form method="POST">
+            {% csrf_token %}
+            <a href="{% url 'add-brake' time_registration.pk %}"
+               class="panel__button primary-button"
+               type="submit"
+               name="add_short_brake"
+            >
+                <i class="fas fa-business-time"></i>
+                <span>Dodaj krótką przerwę</span>
+            </a>
+            <button
+                    class="panel__button primary-button"
+                    type="submit"
+                    name="go_home"
+
+            >
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Wyjście z pracy</span>
+            </button>
+        </form>
+    </div>
+{% endif %}
 <div class="panel__option-buttons">
     <a class="panel__button primary-button" href="{% url 'correction' time_registration.pk %}">
         <i class="fas fa-pencil-alt"></i>

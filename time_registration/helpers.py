@@ -32,4 +32,4 @@ def plan_leaving_hours(request, time_registration):
     employee = get_employee_by_userid(request.user.id)
     working_hours = employee.working_hours
     plan_time = datetime.combine(time_registration.date, time_registration.arrival) + timedelta(hours=working_hours)
-    return plan_time.time()
+    return plan_time

@@ -34,7 +34,8 @@ class Employee(models.Model):
 class TimeRegistration(models.Model):
     arrival = models.TimeField(null=True, blank=True)
     leaving = models.TimeField(null=True, blank=True)
+    plan_leaving = models.TimeField(null=True, blank=True)
     date = models.DateField(default=timezone.now)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=False)
-    brakes = models.ManyToManyField(Brake, blank=True)
+    brakes = models.IntegerField(default=0)
 

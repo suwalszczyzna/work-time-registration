@@ -13,21 +13,19 @@ from .decorators import employee_login_required, unauthenticated_user
 
 @employee_login_required
 def index(request):
-    plan_leave_time = ''
     time_registration: TimeRegistration = TimeRegistration.objects.filter(
         employee__user_id__exact=request.user.id,
         date__exact=timezone.datetime.date(datetime.now())).first()
 
-    if time_registration:
-        plan_leave_time = plan_leaving_hours(request, time_registration)
     context = {
-        'time_registration': time_registration,
-        'plan_leaving_time': plan_leave_time
+        'time_registration': time_registration
     }
+
     if 'arrival' in request.POST:
         employee = get_employee_by_userid(request.user.id)
         new_time_registration = TimeRegistration.objects.create(arrival=timezone.datetime.time(datetime.now()),
                                                                 employee_id=employee.id)
+        new_time_registration.plan_leaving = plan_leaving_hours(request, new_time_registration)
         new_time_registration.save()
         return redirect('home')
     if 'add_short_brake' in request.POST:
@@ -74,6 +72,26 @@ def correction(request, pk):
 
     context = {'time_registration': time_registration}
     return render(request, 'correction.html', context)
+
+
+def add_brake(request, pk):
+    time_registration = get_object_or_404(TimeRegistration, pk=pk)
+    if request.method == 'POST':
+        minutes = 0
+        if 'five-minutes' in request.POST:
+            minutes = 5
+        elif 'ten-minutes' in request.POST:
+            minutes = 10
+        elif 'fifteen-minutes' in request.POST:
+            minutes = 15
+        time_registration.brakes += minutes
+        time_registration.plan_leaving = datetime.combine(
+            time_registration.date, time_registration.plan_leaving) + \
+            timedelta(minutes=time_registration.brakes)
+        time_registration.save()
+        return redirect('home')
+    context = {}
+    return render(request, 'add_brake.html', context)
 
 
 @unauthenticated_user
