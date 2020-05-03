@@ -96,7 +96,7 @@ def correction(request, pk):
     time_registration = get_object_or_404(TimeRegistration, pk=pk)
 
     if not is_register_owner(request.user.id, time_registration):
-        return redirect('login')
+        return redirect('home')
 
     if request.method == "POST":
         if 'save' in request.POST:
