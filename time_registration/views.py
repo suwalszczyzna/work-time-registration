@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 
 from .forms import CreateUserForm
 from .models import TimeRegistration, Employee
+from .decorators import employee_login_required
 
 
 def is_register_owner(user_id, time_registration):
@@ -25,14 +25,6 @@ def is_employed(user_id):
         return True
     else:
         return False
-
-
-emp_login_required = user_passes_test(lambda u: True if is_employed(u.id) else False, login_url='login')
-
-
-def employee_login_required(view_func):
-    decorated_view_func = login_required(emp_login_required(view_func), login_url='login')
-    return decorated_view_func
 
 
 def get_employee_by_userid(user_id):
