@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from .forms import CreateUserForm
 from .helpers import plan_leaving_hours, get_employee_by_userid, is_register_owner
 from .models import TimeRegistration, Employee
-from .decorators import employee_login_required
+from .decorators import employee_login_required, unauthenticated_user
 
 
 @employee_login_required
@@ -76,6 +76,7 @@ def correction(request, pk):
     return render(request, 'correction.html', context)
 
 
+@unauthenticated_user
 def login_page(request):
     if request.method == "POST":
         username = request.POST.get('username')
