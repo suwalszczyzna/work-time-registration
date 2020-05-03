@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test, login_required
 
-from time_registration.views import is_employed
+from .helpers import is_employed
 
 
 def employee_login_required(view_func):
