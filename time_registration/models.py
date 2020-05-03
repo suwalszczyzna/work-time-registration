@@ -8,7 +8,7 @@ User = get_user_model()
 
 class Brake(models.Model):
     minutes = models.IntegerField(default=0, blank=False, null=False)
-    added = models.DateTimeField(default=timezone.now())
+    added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return '{} min brake'.format(self.minutes)
@@ -35,7 +35,7 @@ class Employee(models.Model):
 class TimeRegistration(models.Model):
     arrival = models.TimeField(null=True, blank=True)
     leaving = models.TimeField(null=True, blank=True)
-    date = models.DateField(default=timezone.now())
+    date = models.DateField(default=timezone.now)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=False)
-    brakes = models.ManyToManyField(Brake, null=True, blank=True)
+    brakes = models.ManyToManyField(Brake, blank=True)
 
