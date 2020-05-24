@@ -22,14 +22,15 @@ def is_employed(user_id):
 
 def get_employee_by_userid(user_id):
     try:
-        employee = Employee.objects.get(user_id__exact=user_id)
+        return Employee.objects.get(user_id__exact=user_id)
     except Employee.DoesNotExist:
-        employee = None
-    return employee
+        return None
 
 
-def plan_leaving_hours(request, time_registration):
-    employee = get_employee_by_userid(request.user.id)
+def plan_leaving_hours(time_registration):
+    employee = time_registration.employee
     working_hours = employee.working_hours
-    plan_time = datetime.combine(time_registration.date, time_registration.arrival) + timedelta(hours=working_hours)
+    plan_time = datetime.combine(
+        time_registration.date, time_registration.arrival
+    ) + timedelta(hours=working_hours)
     return plan_time

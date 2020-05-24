@@ -25,7 +25,7 @@ def index(request):
         employee = get_employee_by_userid(request.user.id)
         new_time_registration = TimeRegistration.objects.create(arrival=timezone.datetime.time(datetime.now()),
                                                                 employee_id=employee.id)
-        new_time_registration.plan_leaving = plan_leaving_hours(request, new_time_registration)
+        new_time_registration.plan_leaving = plan_leaving_hours(new_time_registration)
         new_time_registration.save()
         return redirect('home')
     if 'add_short_brake' in request.POST:
