@@ -4,7 +4,7 @@ from time_registration.models import Employee
 
 
 def is_register_owner(user_id, time_registration):
-    employee = get_employee_by_userid(user_id)
+    employee = get_employee_by_user_id(user_id)
 
     if time_registration.employee.id == employee.id:
         return True
@@ -13,14 +13,14 @@ def is_register_owner(user_id, time_registration):
 
 
 def is_employed(user_id):
-    employee = get_employee_by_userid(user_id)
+    employee = get_employee_by_user_id(user_id)
     if employee:
         return True
     else:
         return False
 
 
-def get_employee_by_userid(user_id):
+def get_employee_by_user_id(user_id):
     try:
         return Employee.objects.get(user_id__exact=user_id)
     except Employee.DoesNotExist:

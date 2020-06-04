@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 
 from .forms import CreateUserForm
-from .helpers import plan_leaving_hours, get_employee_by_userid, is_register_owner
+from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner
 from .models import TimeRegistration, Employee
 from .decorators import employee_login_required, unauthenticated_user
 
@@ -22,7 +22,7 @@ def index(request):
     }
 
     if 'arrival' in request.POST:
-        employee = get_employee_by_userid(request.user.id)
+        employee = get_employee_by_user_id(request.user.id)
         new_time_registration = TimeRegistration.objects.create(
             arrival=timezone.datetime.time(datetime.now()),
             employee_id=employee.id

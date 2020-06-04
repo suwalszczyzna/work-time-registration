@@ -1,5 +1,5 @@
 from mixer.backend.django import mixer
-from time_registration.helpers import get_employee_by_userid, is_register_owner, is_employed, plan_leaving_hours
+from time_registration.helpers import get_employee_by_user_id, is_register_owner, is_employed, plan_leaving_hours
 from time_registration.models import TimeRegistration
 import pytest
 import datetime
@@ -16,12 +16,12 @@ class TestHelpers:
 
     def test_get_employee_by_user_id(self):
         employee = mixer.blend('time_registration.Employee')
-        assert get_employee_by_userid(employee.user.id) == employee
+        assert get_employee_by_user_id(employee.user.id) == employee
 
     def test_false_get_employee_by_user_id(self):
         employee = mixer.blend('time_registration.Employee')
         employee2 = mixer.blend('time_registration.Employee')
-        assert get_employee_by_userid(employee.user.id) != employee2
+        assert get_employee_by_user_id(employee.user.id) != employee2
 
     def test_is_employed(self):
         employee = mixer.blend('time_registration.Employee')
