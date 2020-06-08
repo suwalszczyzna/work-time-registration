@@ -1,6 +1,6 @@
 from mixer.backend.django import mixer
 import pytest
-from time_registration.models import Employee, Company
+from time_registration.models import Employee, Company, Brake
 
 
 @pytest.mark.django_db
@@ -15,3 +15,7 @@ class TestModels:
         assert isinstance(company, Company)
         assert company.__str__() == company.name
         assert company.name == 'Grapple'
+
+    def test_brake_minutes_model(self):
+        brake: Brake = mixer.blend('time_registration.Brake')
+        assert brake.__str__() == '0 min brake'
