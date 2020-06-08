@@ -1,0 +1,9 @@
+[run]
+omit = */tests/*
+        */migrations/*
+        */env/*
+        __init__.py
+        admin.py
+        apps.py
+        tests.py
+source = time_registration
