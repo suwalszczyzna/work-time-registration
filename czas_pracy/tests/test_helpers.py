@@ -18,6 +18,10 @@ class TestHelpers:
         employee = mixer.blend('time_registration.Employee')
         assert get_employee_by_user_id(employee.user.id) == employee
 
+    def test_dont_get_employee_by_user_id(self):
+        employee = mixer.blend('time_registration.Employee')
+        assert get_employee_by_user_id(0) != employee
+
     def test_false_get_employee_by_user_id(self):
         employee = mixer.blend('time_registration.Employee')
         employee2 = mixer.blend('time_registration.Employee')
@@ -26,6 +30,9 @@ class TestHelpers:
     def test_is_employed(self):
         employee = mixer.blend('time_registration.Employee')
         assert is_employed(employee.user.id)
+
+    def test_is_not_employed(self):
+        assert not is_employed(0)
 
     def test_plan_leaving_hours(self):
         time = datetime.time(hour=0)
