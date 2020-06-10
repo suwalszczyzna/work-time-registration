@@ -36,3 +36,11 @@ def free_days_form_view(request):
     }
 
     return render(request, 'new_free_days_form.html', context)
+
+
+@employee_login_required
+def free_days_form_summary_view(request):
+    current_user_id = request.user.id
+    free_days_registrations = FreeDayRegistration.objects.filter(employee__user_id__exact=current_user_id)
+    context = {'free_days_registrations': free_days_registrations}
+    return render(request, 'free_days_form_summary.html', context)

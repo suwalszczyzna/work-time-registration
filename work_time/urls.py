@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from time_registration import views
-from free_days_registration.views import free_days_form_view
+from free_days_registration.views import free_days_form_view, free_days_form_summary_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('correction/<str:pk>', views.correction, name='correction'),
     path('add_brake/<str:pk>', views.add_brake, name='add-brake'),
     path('free_days_form/', free_days_form_view, name='free-days-form'),
+    path('free_days_form_summary/', free_days_form_summary_view, name='free-days-form-summary'),
     path('', views.index, name='home')
 ]
