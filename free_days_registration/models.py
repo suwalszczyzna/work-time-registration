@@ -10,14 +10,12 @@ class FreeDayType(models.Model):
         return self.name
 
 
-STATUS = (
-    ('pending', 'W toku'),
-    ('accepted', 'Zaakceptowany'),
-    ('rejected', 'Odrzucony')
-)
-
-
 class FreeDayRegistration(models.Model):
+    STATUS = (
+        ('pending', 'W toku'),
+        ('accepted', 'Zaakceptowany'),
+        ('rejected', 'Odrzucony')
+    )
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     free_day_type = models.ForeignKey(FreeDayType, on_delete=models.CASCADE)
     start_date = models.DateField()
