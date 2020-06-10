@@ -34,8 +34,5 @@ def free_days_form_view(request):
     context = {
         'free_days_types': free_days_types
     }
-    # 'proposal': ['4'],
-    # 'start-absense': ['2020-06-01'],
-    # 'end-absense': ['2020-06-03'],
-    # 'more-info': ['test'], 'send': ['']}>
+
     return render(request, 'new_free_days_form.html', context)
