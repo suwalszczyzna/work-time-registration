@@ -115,3 +115,7 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+def unemployed_warning_page(request):
+    return render(request, 'not_employee_warning_page.html', context={})

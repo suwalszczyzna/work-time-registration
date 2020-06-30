@@ -12,5 +12,6 @@ urlpatterns = [
     path('add_brake/<str:pk>', views.add_brake, name='add-brake'),
     path('free_days_form/', free_days_form_view, name='free-days-form'),
     path('free_days_form_summary/', free_days_form_summary_view, name='free-days-form-summary'),
+    path('unemployed/', views.unemployed_warning_page, name='unemployed-warning-page'),
     path('', views.index, name='home')
 ]

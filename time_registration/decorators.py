@@ -5,7 +5,7 @@ from .helpers import is_employed
 
 
 def employee_login_required(view_func):
-    emp_login_required = user_passes_test(lambda u: True if is_employed(u.id) else False, login_url='login')
+    emp_login_required = user_passes_test(lambda u: True if is_employed(u.id) else False, login_url='unemployed-warning-page')
     decorated_view_func = login_required(emp_login_required(view_func), login_url='login')
     return decorated_view_func
 
