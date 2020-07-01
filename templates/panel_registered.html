@@ -1,50 +1,38 @@
-<div class="panel__hours-container">
-    <div class="panel__hours-container__item">
-        <h4>Przyjście:</h4>
-        <h4>{{ time_registration.arrival }}</h4>
-    </div>
-    <div class="panel__hours-container__item">
+<div class="container-sm time-registration-container">
+    <table class="table table-hover text-left">
+        <tbody>
+            <tr>
+                <td>Przyjście:</td>
+                <td>{{ time_registration.arrival }}</td>
+            </tr>
 
-        {% if not time_registration.leaving %}
-            <h4>Planowane wyjście:</h4>
-            <h4 class="grey">{{ time_registration.plan_leaving }}
-                {% if time_registration.brakes > 0 %}
-                    (w tym przerwy: {{ time_registration.brakes }} min.)
-                {% endif %}
-            </h4>
-        {% else %}
-            <h4>Wyjście:</h4>
-            <h4>{{ time_registration.leaving }}</h4>
-        {% endif %}
-    </div>
+            <tr>
+                <td>Przerwy:</td>
+                <td>{% if time_registration.brakes > 0 %}{{ time_registration.brakes }} min.{% else %}--{% endif %}</td>
+            </tr>
+            <tr>
+                <td>Planowane wyjście</td>
+                <td>{{ time_registration.plan_leaving }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-{% if not time_registration.leaving %}
-    <div class="panel__main-buttons">
-        <form method="POST">
-            {% csrf_token %}
-            <a href="{% url 'add-brake' time_registration.pk %}"
-               class="panel__button primary-button"
-               type="submit"
-               name="add_short_brake"
-            >
-                <i class="fas fa-business-time"></i>
-                <span>Dodaj krótką przerwę</span>
-            </a>
-            <button
-                    class="panel__button primary-button"
-                    type="submit"
-                    name="go_home"
+<div class="container-sm time-registration-container">
 
-            >
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Wyjście z pracy</span>
-            </button>
-        </form>
-    </div>
-{% endif %}
-<div class="panel__option-buttons">
-    <a class="panel__button primary-button" href="{% url 'correction' time_registration.pk %}">
-        <i class="fas fa-pencil-alt"></i>
-        <span>Korekta</span>
-    </a>
+    {% if not time_registration.leaving %}
+        <button
+                data-toggle="modal"
+                data-target="#brakeModal"
+                class="btn btn-outline-primary btn-lg btn-block"
+        >
+            Dodaj przerwę
+        </button>
+        <button
+                data-toggle="modal"
+                data-target="#time_register_gohome_modal"
+                class="btn btn-outline-primary btn-lg btn-block"
+        >
+            Wyjście
+        </button>
+    {% endif %}
 </div>

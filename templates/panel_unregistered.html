@@ -1,10 +1,10 @@
-<h4>Niezarejestrowano przyjścia</h4>
-<div class="panel__main-buttons">
-    <form method="POST">
-        {% csrf_token %}
-        <button class="panel__button primary-button" type="submit" name="arrival">
-            <i class="fas fa-briefcase"></i>
-            <span>Przyjście do pracy</span>
-        </button>
-    </form>
+<h6 class="card-title m-5">Niezarejestrowano przyjścia</h6>
+<div class="container-sm time-registration-container">
+    <button
+            data-toggle="modal"
+            data-target="#time_register_income_modal"
+            class="btn btn-outline-primary btn-lg btn-block"
+    >
+        Zarejestruj przyjście
+    </button>
 </div>

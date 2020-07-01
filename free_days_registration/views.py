@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from free_days_registration.models import FreeDayType, FreeDayRegistration
 from time_registration.decorators import employee_login_required
 from time_registration.helpers import get_employee_by_user_id
-
+from .forms import FreeDayRegisterForm
 
 @employee_login_required
 def free_days_form_view(request):
@@ -44,3 +44,12 @@ def free_days_form_summary_view(request):
     free_days_registrations = FreeDayRegistration.objects.filter(employee__user_id__exact=current_user_id)
     context = {'free_days_registrations': free_days_registrations}
     return render(request, 'free_days_form_summary.html', context)
+
+
+@employee_login_required
+def free_days_form_boot_view(request):
+    form = FreeDayRegisterForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'free_days_form.html', context)

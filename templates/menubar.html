@@ -1,24 +1,43 @@
-<nav class="menubar">
-    <span class="menubar__logo"><a href="{% url 'home' %}">Czas pracy</a></span>
-    <ul class="menubar__menu">
-        <li class="menubar__menu__item">
-            <a href="{% url 'free-days-form' %}"><i class="fas fa-plus-circle"></i>Nowy wniosek</a>
-        </li>
-        <li class="menubar__menu__item">
-            <a href="{% url 'free-days-form-summary' %}"><i class="fas fa-clipboard-check"></i>Moje wnioski</a>
-        </li>
-        <li class="menubar__menu__item">
-            <a href="#"><i class="fas fa-align-left"></i>Raport sald</a>
-        </li>
-        {% if request.user.is_authenticated  %}
-        <li class="menubar__menu__item">
-            <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>{{ request.user }}, wyloguj</a>
-        </li>
-        {% endif %}
-    </ul>
-    <div class="menubar__burger">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">Czas pracy</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+                class="collapse navbar-collapse mr-right"
+                id="navbarSupportedContent"
+        >
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active mr-1">
+                    <a class="nav-link" href="{% url 'home' %}"
+                    >Rejestracja czasu pracy
+                        <span class="sr-only">(current)</span></a
+                    >
+                </li>
+                <li class="nav-item mr-1">
+                    <a class="nav-link" href="{% url 'free-days-form' %}">Nowy wniosek urlopowy</a>
+                </li>
+                <li class="nav-item mr-5">
+                    <a class="nav-link" href="#">Złożone wnioski</a>
+                </li>
+                {% if request.user.is_authenticated  %}
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" type="button" class="btn btn-outline-light">
+                        {{ request.user }}, wyloguj
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>
