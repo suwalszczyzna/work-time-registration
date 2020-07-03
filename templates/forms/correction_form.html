@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container mt-4 text-center">
+        <div class="card p-4 mx-auto time-registration-container">
+            <h1 class="card-title display-1">{% now "H:i" %}</h1>
+            <div class="card-body ">
+                <form method="POST" style="width: 100%;">
+
+                    {% csrf_token %}
+                    <h3>Korekta</h3>
+                    <div class="form-group m-3 text-left">
+                        <label for="arrival"><h4>Przyjście:</h4></label>
+                        <input
+                                class="form-control"
+                                type="time"
+                                id="arrival"
+                                name="arrival"
+                                value="{{ time_registration.arrival }}"
+                        />
+                    </div>
+                    <div class="form-group m-3 text-left">
+                        <label for="leaving"><h4>Wyjście:</h4></label>
+                        <input
+                                class="form-control"
+                                type="time"
+                                id="leaving"
+                                name="leaving"
+                                value="{{ time_registration.leaving }}"
+                        />
+                    </div>
+
+                    <div class="container ">
+
+                        <button type="submit" name="save" class="btn btn-outline-success w-50">Zapisz zmiany</button>
+                        <a href="{% url 'home' %}" type="submit" class="btn btn-outline-info w-25">Anuluj</a>
+                    </div>
+                    <div class="container mt-5">
+                        <button type="submit" name="delete" class="btn btn-outline-danger">Usuń rejestrację
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

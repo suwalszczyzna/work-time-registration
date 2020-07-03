@@ -34,3 +34,9 @@ def plan_leaving_hours(time_registration):
         time_registration.date, time_registration.arrival
     ) + timedelta(hours=working_hours)
     return plan_time
+
+
+def combine_plan_leaving_date(time_registration):
+    return datetime.combine(
+        time_registration.date, time_registration.plan_leaving) + \
+           timedelta(minutes=time_registration.brakes)

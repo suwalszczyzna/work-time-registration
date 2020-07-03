@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static "style.css" %}" />
   </head>
   <body>
-    {% include 'menubar.html' %}
+    {% include 'base/menubar.html' %}
     <div class="container">
         {% block content %}
         {% endblock %}
@@ -35,6 +35,7 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+
   </body>
 </html>
 

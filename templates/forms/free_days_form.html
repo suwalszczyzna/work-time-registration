@@ -1,8 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="container mt-4">
         <div class="card p-4 mx-auto time-registration-container">
+            {{ form.errors }}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <h2 class="card-title text-center mb-5">Nowy wniosek urlopowy</h2>
             <form method="post">
                 {% csrf_token %}
