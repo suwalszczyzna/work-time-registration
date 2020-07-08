@@ -42,7 +42,7 @@ def index(request):
         time_registration.leaving = timezone.datetime.time(datetime.now())
         time_registration.save()
         return redirect('home')
-    return render(request, 'time_registratioin/panel.html', context)
+    return render(request, 'time_registration/panel.html', context)
 
 
 def register(request):
@@ -80,7 +80,7 @@ def correction(request, pk):
     context = {
         'time_registration': time_registration,
     }
-    return render(request, 'time_registratioin/correction_form.html', context)
+    return render(request, 'time_registration/correction_form.html', context)
 
 
 @unauthenticated_user
