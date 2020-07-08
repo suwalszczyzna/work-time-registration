@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 
-from .forms import CreateUserForm
-from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner
+from .forms import CreateUserForm, CorrectionForm
+from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner, combine_plan_leaving_date
 from .models import TimeRegistration, Employee
 from .decorators import employee_login_required, unauthenticated_user
 
@@ -20,7 +21,6 @@ def index(request):
     context = {
         'time_registration': time_registration
     }
-
     if 'arrival' in request.POST:
         employee = get_employee_by_user_id(request.user.id)
         new_time_registration = TimeRegistration.objects.create(
@@ -30,13 +30,19 @@ def index(request):
         new_time_registration.plan_leaving = plan_leaving_hours(new_time_registration)
         new_time_registration.save()
         return redirect('home')
-    if 'add_short_brake' in request.POST:
-        print('add_short_brake')
+
+    if 'add_break' in request.POST:
+        minutes_brake = request.POST.get('minutesOfBreak', 0)
+        time_registration.brakes += int(minutes_brake)
+        time_registration.plan_leaving = combine_plan_leaving_date(time_registration)
+        time_registration.save()
+        return redirect('home')
+
     if 'go_home' in request.POST:
         time_registration.leaving = timezone.datetime.time(datetime.now())
         time_registration.save()
         return redirect('home')
-    return render(request, 'panel.html', context)
+    return render(request, 'time_registration/panel.html', context)
 
 
 def register(request):
@@ -49,13 +55,12 @@ def register(request):
             messages.success(request, 'Pomyślnie założono konto: ' + username)
             form.clean()
     context = {'form': form}
-    return render(request, 'register.html', context)
+    return render(request, 'base/register.html', context)
 
 
 @employee_login_required
 def correction(request, pk):
     time_registration = get_object_or_404(TimeRegistration, pk=pk)
-
     if not is_register_owner(request.user.id, time_registration):
         return redirect('home')
 
@@ -72,28 +77,10 @@ def correction(request, pk):
             time_registration.delete()
         return redirect('home')
 
-    context = {'time_registration': time_registration}
-    return render(request, 'correction.html', context)
-
-
-def add_brake(request, pk):
-    time_registration = get_object_or_404(TimeRegistration, pk=pk)
-    if request.method == 'POST':
-        minutes = 0
-        if 'five-minutes' in request.POST:
-            minutes = 5
-        elif 'ten-minutes' in request.POST:
-            minutes = 10
-        elif 'fifteen-minutes' in request.POST:
-            minutes = 15
-        time_registration.brakes += minutes
-        time_registration.plan_leaving = datetime.combine(
-            time_registration.date, time_registration.plan_leaving) + \
-            timedelta(minutes=time_registration.brakes)
-        time_registration.save()
-        return redirect('home')
-    context = {}
-    return render(request, 'add_brake.html', context)
+    context = {
+        'time_registration': time_registration,
+    }
+    return render(request, 'time_registration/correction_form.html', context)
 
 
 @unauthenticated_user
@@ -109,7 +96,7 @@ def login_page(request):
             messages.error(request, 'Nazwa lub hasło jest niepoprawne')
 
     context = {}
-    return render(request, 'login.html', context)
+    return render(request, 'base/login.html', context)
 
 
 def logout_user(request):
@@ -118,4 +105,4 @@ def logout_user(request):
 
 
 def unemployed_warning_page(request):
-    return render(request, 'not_employee_warning_page.html', context={})
+    return render(request, 'base/not_employee_warning_page.html', context={})

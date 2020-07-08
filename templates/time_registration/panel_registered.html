@@ -1,0 +1,161 @@
+{% load static %}
+<div class="container-sm time-registration-container">
+    <table class="table table-hover text-left">
+        <tbody>
+        <tr>
+            <td>Przyjście:</td>
+            <td>{{ time_registration.arrival }}</td>
+        </tr>
+
+        <tr>
+            <td>Przerwy:</td>
+            <td>{% if time_registration.brakes > 0 %}{{ time_registration.brakes }} min.{% else %}--{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Wyjście</td>
+            <td>
+                {% if not time_registration.leaving %}
+                    Planowane wyjście {{ time_registration.plan_leaving }}
+                {% else %}
+                    {{ time_registration.leaving }}
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container-sm time-registration-container">
+
+    {% if not time_registration.leaving %}
+        <button
+                data-toggle="modal"
+                data-target="#brakeModal"
+                class="btn btn-outline-primary btn-lg btn-block"
+        >
+            Dodaj przerwę
+        </button>
+        <button
+                data-toggle="modal"
+                data-target="#time_register_gohome_modal"
+                class="btn btn-outline-primary btn-lg btn-block"
+        >
+            Wyjście
+        </button>
+    {% endif %}
+    <a href="{% url 'correction' time_registration.pk %}" class="btn btn-outline-primary btn-lg btn-block">Korekta</a>
+</div>
+
+<!-- Go home Modal -->
+<div
+        class="modal fade"
+        id="time_register_gohome_modal"
+        data-backdrop="static"
+        data-keyboard="false"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    Rejestracja wyjścia do domu
+                </h5>
+                <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Rejestrujesz wyjście z pracy o godzinie {% now "H:i" %}</p>
+            </div>
+            <div class="modal-footer">
+                <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                >
+                    Anuluj
+                </button>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="go_home" class="btn btn-primary">Rejestruj wyjście</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add brake Modal -->
+<div
+        class="modal fade"
+        id="brakeModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="brakeModalLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="brakeModalLabel">
+                    Dodaj przerwę w pracy
+                </h5>
+                <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p>Czas w minutach</p>
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend" id="button-addon3">
+                            <button id="subFiveMinutes" class="btn btn-outline-secondary" type="button">
+                                - 5min
+                            </button>
+                        </div>
+                        <input
+                                id="minutesOfBreak"
+                                name="minutesOfBreak"
+                                type="text"
+                                class="form-control text-center"
+                                placeholder=""
+                                value="10"
+                                aria-describedby="button-addon3"
+                        />
+                        <div class="input-group-append" id="button-addon4">
+                            <button id="addFiveMinutes" class="btn btn-outline-secondary" type="button">
+                                + 5min
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                    >
+                        Anuluj
+                    </button>
+                    <button type="submit" name="add_break" class="btn btn-primary">Dodaj przerwę</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{% static "addBrakeModal.js" %}"></script>
