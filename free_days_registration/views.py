@@ -9,39 +9,6 @@ from time_registration.views import index
 from .forms import FreeDayRegisterForm
 
 
-# @employee_login_required
-# def free_days_form_view(request):
-#     free_days_types = FreeDayType.objects.all()
-#     print(request)
-#     if request.method == "POST":
-#         employee = get_employee_by_user_id(request.user.id)
-#         type_id_form = request.POST.get('proposal', 1)
-#         free_day_type_obj = FreeDayType.objects.get(pk=type_id_form)
-#
-#         start_date = request.POST.get('start-absense')
-#         end_date = request.POST.get('end-absense')
-#         note = request.POST.get('more-info')
-#
-#         if start_date and end_date:
-#             new_free_days_registration = FreeDayRegistration.objects.create(
-#                 employee_id=employee.id,
-#                 free_day_type_id=free_day_type_obj.id,
-#                 start_date=start_date,
-#                 end_date=end_date,
-#                 note=note
-#             )
-#             new_free_days_registration.save()
-#             return redirect('home')
-#         else:
-#             messages.error(request, 'Daty są niepoprawne')
-#
-#     context = {
-#         'free_days_types': free_days_types
-#     }
-#
-#     return render(request, 'forms/new_free_days_form.html', context)
-
-
 @employee_login_required
 def free_days_form_summary_view(request):
     current_user_id = request.user.id
@@ -53,12 +20,29 @@ def free_days_form_summary_view(request):
 @employee_login_required
 def free_days_register_form(request):
     if request.method == "POST":
+
         form = FreeDayRegisterForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            # form.save()
-            # form.clean()
-            # return redirect('home')
+            form_data = form.cleaned_data
+            employee = get_employee_by_user_id(request.user.id)
+            start_date = form_data.get('start_date')
+            end_date = form_data.get('end_date')
+            free_day_type = form_data.get('free_day_type')
+            note = form_data.get('note')
+
+            if start_date > end_date:
+                messages.error(request, 'Data końca urlopu nie może być mniejsza niż data początkowa')
+            else:
+                new_free_day = FreeDayRegistration.objects.create(
+                    employee_id=employee.id,
+                    start_date=start_date,
+                    end_date=end_date,
+                    free_day_type=free_day_type,
+                    note=note
+                )
+                new_free_day.save()
+                form.clean()
+                return redirect('home')
     else:
         form = FreeDayRegisterForm()
 
