@@ -21,7 +21,6 @@ def index(request):
     context = {
         'time_registration': time_registration
     }
-    print(request.POST)
     if 'arrival' in request.POST:
         employee = get_employee_by_user_id(request.user.id)
         new_time_registration = TimeRegistration.objects.create(
@@ -33,7 +32,6 @@ def index(request):
         return redirect('home')
 
     if 'add_break' in request.POST:
-        print('dodaje przerwe')
         minutes_brake = request.POST.get('minutesOfBreak', 0)
         time_registration.brakes += int(minutes_brake)
         time_registration.plan_leaving = combine_plan_leaving_date(time_registration)
