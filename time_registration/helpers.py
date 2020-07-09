@@ -1,6 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
-from time_registration.models import Employee
+from time_registration.models import Employee, TimeRegistration
 
 
 def is_register_owner(user_id, time_registration):
@@ -30,13 +30,17 @@ def get_employee_by_user_id(user_id):
 def plan_leaving_hours(time_registration):
     employee = time_registration.employee
     working_hours = employee.working_hours
-    plan_time = datetime.combine(
+    plan_date: datetime = datetime.combine(
         time_registration.date, time_registration.arrival
     ) + timedelta(hours=working_hours)
+
+    plan_time: time = time(plan_date.hour, plan_date.minute)
     return plan_time
 
 
-def combine_plan_leaving_date(time_registration):
-    return datetime.combine(
-        time_registration.date, time_registration.plan_leaving) + \
-           timedelta(minutes=time_registration.brakes)
+def plan_leaving_hour_with_brakes(time_registration: TimeRegistration) -> time:
+    plan_hours: time = plan_leaving_hours(time_registration)
+    _dumb_plan_leaving: datetime = datetime(100, 1, 1, plan_hours.hour, plan_hours.minute)
+    result_plan_leaving: datetime = _dumb_plan_leaving + timedelta(minutes=time_registration.brakes)
+
+    return result_plan_leaving.time()

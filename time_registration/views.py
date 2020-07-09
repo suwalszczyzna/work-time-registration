@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 
 from .forms import CreateUserForm, CorrectionForm
-from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner, combine_plan_leaving_date
+from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner, plan_leaving_hour_with_brakes
 from .models import TimeRegistration, Employee
 from .decorators import employee_login_required, unauthenticated_user
 
@@ -34,7 +34,7 @@ def index(request):
     if 'add_break' in request.POST:
         minutes_brake = request.POST.get('minutesOfBreak', 0)
         time_registration.brakes += int(minutes_brake)
-        time_registration.plan_leaving = combine_plan_leaving_date(time_registration)
+        time_registration.plan_leaving = plan_leaving_hour_with_brakes(time_registration)
         time_registration.save()
         return redirect('home')
 
