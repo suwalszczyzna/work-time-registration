@@ -4,6 +4,12 @@
 
     <div class="container mt-4 text-center">
         <div class="card p-4 mx-auto time-registration-container">
+            {{ form.errors }}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <h1 class="card-title display-1">{% now "H:i" %}</h1>
             <div class="card-body ">
                 <form method="POST" style="width: 100%;">

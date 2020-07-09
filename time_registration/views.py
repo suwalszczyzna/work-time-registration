@@ -65,17 +65,24 @@ def correction(request, pk):
         return redirect('home')
 
     if request.method == "POST":
+
         if 'save' in request.POST:
             arrival = request.POST.get('arrival')
             leaving = request.POST.get('leaving')
-            if arrival:
-                time_registration.arrival = arrival
-            if leaving:
-                time_registration.leaving = leaving
-            time_registration.save()
+
+            if (arrival and leaving) and arrival > leaving:
+                messages.error(request, 'Godzina wyjścia nie może być późniejsza niż przyjście')
+            else:
+                if arrival:
+                    time_registration.arrival = arrival
+                if leaving:
+                    time_registration.leaving = leaving
+
+                time_registration.save()
+                return redirect('home')
         elif 'delete' in request.POST:
             time_registration.delete()
-        return redirect('home')
+            return redirect('home')
 
     context = {
         'time_registration': time_registration,
