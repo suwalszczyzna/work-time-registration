@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 
 from .forms import CreateUserForm, CorrectionForm
-from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner, plan_leaving_hour_with_brakes
+from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner, plan_leaving_hour_with_brakes, \
+    round_time
 from .models import TimeRegistration, Employee
 from .decorators import employee_login_required, unauthenticated_user
 
@@ -23,8 +24,11 @@ def index(request):
     }
     if 'arrival' in request.POST:
         employee = get_employee_by_user_id(request.user.id)
+
+        rounded_now: datetime = round_time(datetime.now(), timedelta(seconds=60*15), to='down')
+
         new_time_registration = TimeRegistration.objects.create(
-            arrival=timezone.datetime.time(datetime.now()),
+            arrival=rounded_now.time(),
             employee_id=employee.id
         )
         new_time_registration.plan_leaving = plan_leaving_hours(new_time_registration)
