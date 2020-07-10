@@ -1,15 +1,14 @@
 {% extends 'base/base.html' %}
 {% block content %}
-    <div class="container mt-4">
-        <div class="card p-4 text-center mx-auto">
-            <h3 class="card-title">Wszystkie wnioski</h3>
+    <div class="card w-100 mt-4 p-4 text-center mx-auto">
+        <h3 class="card-title">Wszystkie wnioski</h3>
+        <div class="table-responsive-md">
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">Pracownik</th>
                     <th scope="col">Typ urlopu</th>
-                    <th scope="col">Data początku</th>
-                    <th scope="col">Data zakończenia</th>
+                    <th scope="col">Data od</th>
+                    <th scope="col">Data do</th>
                     <th scope="col">Ilość dni</th>
                     <th scope="col">Aktualny status</th>
                 </tr>
@@ -17,20 +16,22 @@
                 <tbody>
                 {% for registration in free_days_registrations %}
                     <tr>
-                        <td>{{ registration.employee }}</td>
                         <td>{{ registration.free_day_type }}</td>
                         <td>{{ registration.start_date }}</td>
                         <td>{{ registration.end_date }}</td>
                         <td>{{ registration.num_of_days }}</td>
-                        <td class="badge
-                        {% if registration.status == 1 %}
-                            badge-secondary
-                        {% elif registration.status == 2 %}
-                            badge-success
-                        {% elif registration.status == 3 %}
-                            badge-danger
-                        {% endif %}
-                        ">{{ registration.status_name }}</td>
+                        <td>
+                        <span class="p-2 badge
+                            {% if registration.status == 1 %}
+                                badge-secondary
+                            {% elif registration.status == 2 %}
+                                badge-success
+                            {% elif registration.status == 3 %}
+                                badge-danger
+                            {% endif %}
+                        ">{{ registration.status_name }}
+                        </span>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
