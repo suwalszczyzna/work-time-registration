@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from time_registration.models import Employee
+from django.utils.translation import ugettext_lazy as _
 
 
 class FreeDayType(models.Model):
@@ -19,13 +20,13 @@ class FreeDayRegistration(models.Model):
         (ACCEPTED, 'Zaakceptowany'),
         (REJECTED, 'Odrzucony'),
     )
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    free_day_type = models.ForeignKey(FreeDayType, on_delete=models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    create_date = models.DateField(default=timezone.now)
-    note = models.CharField(max_length=4000, null=True, blank=True)
-    status = models.PositiveSmallIntegerField(choices=STATUS, default=PENDING)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='pracownik')
+    free_day_type = models.ForeignKey(FreeDayType, on_delete=models.CASCADE, verbose_name='typ urlopu')
+    start_date = models.DateField(verbose_name='data od')
+    end_date = models.DateField(verbose_name='data do')
+    create_date = models.DateField(default=timezone.now, verbose_name='data złożenia wniosku')
+    note = models.CharField(max_length=4000, null=True, blank=True, verbose_name='notatka')
+    status = models.PositiveSmallIntegerField(choices=STATUS, default=PENDING, verbose_name='status')
 
     def __str__(self):
         return "{0} dni, typ urlopu: {1}".format(self.num_of_days, self.free_day_type)
@@ -38,3 +39,7 @@ class FreeDayRegistration(models.Model):
     @property
     def status_name(self):
         return self.STATUS[self.status-1][1]
+
+    class Meta:
+        verbose_name = _("wniosek urlopowy")
+        verbose_name_plural = _("wnioski urlopowe")
