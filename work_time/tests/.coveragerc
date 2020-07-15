@@ -5,4 +5,4 @@ omit =
         *admin*
         *apps*
         *tests*
-source = time_registration
+source = time_registration, free_days_registration
