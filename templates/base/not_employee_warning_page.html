@@ -1,7 +1,14 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-    <section class="panel">
-        <h2>Nie masz dostępu do tej strony.</h2>
-    </section>
+    <div class="container-sm mt-4">
+        <div class="card text-center mx-auto time-registration-container">
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    Nie masz dostępu do tej strony
+                </div>
+                <p>Prawdopodobnie nie jesteś przypisany do żadnej firmy</p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
