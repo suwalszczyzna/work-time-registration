@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from time_registration.models import Employee
+from .business_days import number_of_business_days_without_holidays
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -27,12 +28,11 @@ class FreeDayRegistration(models.Model):
     status = models.IntegerField(choices=Status.choices, default=Status.PENDING, verbose_name='status')
 
     def __str__(self):
-        return "{0} dni, typ urlopu: {1}".format(self.num_of_days, self.free_day_type)
+        return "{0} dni, typ urlopu: {1}".format(self.business_days, self.free_day_type)
 
     @property
-    def num_of_days(self):
-        delta_time = self.end_date - self.start_date
-        return delta_time.days + 1
+    def business_days(self):
+        return number_of_business_days_without_holidays(self.start_date, self.end_date)
 
     @property
     def status_name(self):

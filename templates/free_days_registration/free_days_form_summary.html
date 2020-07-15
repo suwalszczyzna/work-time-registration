@@ -9,7 +9,7 @@
                     <th scope="col">Typ urlopu</th>
                     <th scope="col">Data od</th>
                     <th scope="col">Data do</th>
-                    <th scope="col">Ilość dni</th>
+                    <th scope="col">Ilość dni roboczych</th>
                     <th scope="col">Aktualny status</th>
                 </tr>
                 </thead>
@@ -19,7 +19,7 @@
                         <td>{{ registration.free_day_type }}</td>
                         <td>{{ registration.start_date }}</td>
                         <td>{{ registration.end_date }}</td>
-                        <td>{{ registration.num_of_days }}</td>
+                        <td>{{ registration.business_days }}</td>
                         <td>
                             <span class="p-2 badge
                                 {% if registration.status == 1 %}

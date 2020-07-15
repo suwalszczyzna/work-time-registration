@@ -5,7 +5,7 @@ admin.site.register(FreeDayType)
 
 
 class FreeDayRegistrationAdmin(admin.ModelAdmin):
-    list_display = ('employee', 'free_day_type', 'start_date', 'end_date', 'num_of_days', 'create_date', 'status')
+    list_display = ('employee', 'free_day_type', 'start_date', 'end_date', 'business_days', 'create_date', 'status')
 
 
 admin.site.register(FreeDayRegistration, FreeDayRegistrationAdmin)
