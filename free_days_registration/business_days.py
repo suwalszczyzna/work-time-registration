@@ -14,6 +14,5 @@ def number_of_business_days_without_holidays(date_from: date, date_to: date) -> 
     result = 0
     for day in pd.date_range(date_from, date_to):
         if day not in holidays.PL() and not is_weekend(day):
-            print(date.weekday(day))
             result += 1
     return result
