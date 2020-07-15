@@ -3,7 +3,7 @@ from time_registration.helpers import get_employee_by_user_id, is_register_owner
 from time_registration.models import TimeRegistration, Employee
 from django.test import TestCase
 import pytest
-import datetime
+from datetime import datetime, time
 
 
 @pytest.fixture
@@ -53,6 +53,5 @@ def test_is_not_employed(db):
 
 
 def test_plan_leaving_hours(db):
-    time = datetime.time(hour=0)
-    time_registration: TimeRegistration = mixer.blend(TimeRegistration, arrival=time)
-    assert plan_leaving_hours(time_registration).time() == datetime.time(8, 0)
+    time_registration: TimeRegistration = mixer.blend(TimeRegistration, arrival=time(hour=0))
+    assert plan_leaving_hours(time_registration) == time(8, 0)

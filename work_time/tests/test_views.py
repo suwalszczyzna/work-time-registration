@@ -22,7 +22,7 @@ class TestViews(TestCase):
 
         response = index(request)
         assert response.status_code == 302
-        assert response.url == "/login/?next=/"
+        assert response.url == "/unemployed/?next=/"
 
     def test_index_user_is_employee(self):
         path = reverse(index)
