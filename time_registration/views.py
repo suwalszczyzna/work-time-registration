@@ -22,10 +22,11 @@ def index(request):
     context = {
         'time_registration': time_registration
     }
+
+    rounded_now: datetime = round_time(datetime.now(), timedelta(seconds=60 * 15), to='down')
+
     if 'arrival' in request.POST:
         employee = get_employee_by_user_id(request.user.id)
-
-        rounded_now: datetime = round_time(datetime.now(), timedelta(seconds=60*15), to='down')
 
         new_time_registration = TimeRegistration.objects.create(
             arrival=rounded_now.time(),
@@ -43,7 +44,7 @@ def index(request):
         return redirect('home')
 
     if 'go_home' in request.POST:
-        time_registration.leaving = timezone.datetime.time(datetime.now())
+        time_registration.leaving = rounded_now.time()
         time_registration.save()
         return redirect('home')
     return render(request, 'time_registration/panel.html', context)
