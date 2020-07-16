@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from free_days_registration.models import FreeDayType, FreeDayRegistration
 from time_registration.decorators import employee_login_required
@@ -13,7 +14,12 @@ from .forms import FreeDayRegisterForm
 def free_days_form_summary_view(request):
     current_user_id = request.user.id
     free_days_registrations = FreeDayRegistration.objects.filter(employee__user_id__exact=current_user_id)
-    context = {'free_days_registrations': free_days_registrations}
+
+    paginator = Paginator(free_days_registrations, 10)
+
+    page = request.GET.get('page')
+
+    context = {'objects': paginator.get_page(page)}
     return render(request, 'free_days_registration/free_days_form_summary.html', context)
 
 

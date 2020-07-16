@@ -14,28 +14,63 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for registration in free_days_registrations %}
+                {% for item in objects %}
                     <tr>
-                        <td>{{ registration.free_day_type }}</td>
-                        <td>{{ registration.start_date }}</td>
-                        <td>{{ registration.end_date }}</td>
-                        <td>{{ registration.business_days }}</td>
+                        <td>{{ item.free_day_type }}</td>
+                        <td>{{ item.start_date }}</td>
+                        <td>{{ item.end_date }}</td>
+                        <td>{{ item.business_days }}</td>
                         <td>
                             <span class="p-2 badge
-                                {% if registration.status == 1 %}
+                                {% if item.status == 1 %}
                                     badge-secondary
-                                {% elif registration.status == 2 %}
+                                {% elif item.status == 2 %}
                                     badge-success
-                                {% elif registration.status == 3 %}
+                                {% elif item.status == 3 %}
                                     badge-danger
                                 {% endif %}
-                            ">{{ registration.status_name }}
+                            ">{{ item.status_name }}
                             </span>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+            <nav aria-label="Paginacja wniosków">
+                <ul class="pagination justify-content-center">
+                    {% if objects.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ objects.previous_page_number }}"
+                               tabindex="-1">Poprzednia</a>
+                            {% else %}
+                        <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Poprzednia</a>
+                    {% endif %}
+
+                    </li>
+
+                    {% for num in objects.paginator.page_range %}
+                        <li class="page-item
+                            {% if num == objects.number %}
+                                disabled
+                            {% endif %}">
+                            <a class="page-link" href="?page={{ num }}">
+                                {{ num }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if objects.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ objects.next_page_number }}"
+                            >Następna</a>
+                            {% else %}
+                        <li class="page-item disabled">
+                        <a class="page-link" href="#">Następna</a>
+                    {% endif %}
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 {% endblock %}
