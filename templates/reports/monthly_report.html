@@ -1,11 +1,60 @@
 {% extends 'base/base.html' %}
 {% block content %}
-    <div class="container mt-4">
+    <div class="container-sm card mt-4 pt-4">
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Lipiec 2020
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Sierpień 2020</a>
+          <a class="dropdown-item" href="#">Wrzesień 2020</a>
+          <a class="dropdown-item" href="#">Październik 2020</a>
+        </div>
+      </div>
+      <div class="container pl-0 mt-4 mb-4">
+        <div class="row">
+          <div class="col">
+            <h5>Raport sald za lipiec 2020</h5>
+          </div>
+          <div class="col text-right">
+            <button class="btn btn-primary">
+              <i class="fas fa-file-download"></i> Pobierz PDF
+            </button>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover table-responsive monthly-report">
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Przyjście</th>
+            <th scope="col">Wyjście</th>
+            <th scope="col">Plan. wyjścia</th>
+            <th scope="col">Przerwy</th>
+            <th scope="col">Realizacja</th>
+            <th scope="col">Nadgodziny</th>
+            <th scope="col">Braki</th>
+            <th scope="col">Planowana nieobecność</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+          <tr>
+              {% for r in row %}
+                <td>{{ r }}</td>
+              {% endfor %}
+          </tr>
 
-        <ul>
-            {% for r in rows %}
-                <li>{{ r }}</li>
-            {% endfor %}
-        </ul>
+        {% endfor %}
+        </tbody>
+      </table>
     </div>
+
 {% endblock %}

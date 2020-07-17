@@ -57,7 +57,7 @@ class ReportRowGenerator:
                 return fdr.free_day_type
 
     def row_generate(self) -> list:
-        row_date = str(self.date)
+        row_date = self.date.strftime("%d.%m.%Y")
         time_arrival = getattr(self.time_reg, 'arrival', '-')
         time_leaving = getattr(self.time_reg, 'leaving', '-')
         plan_leaving = getattr(self.time_reg, 'plan_leaving', '-')
@@ -65,14 +65,14 @@ class ReportRowGenerator:
 
         result = [
             row_date,
-            str(time_arrival),
-            str(time_leaving),
-            str(plan_leaving),
-            str(brakes),
-            str(self.realization),
-            str(self.overtime),
-            str(self.lack),
-            str(self.free_day_type)
+            time_arrival,
+            time_leaving,
+            plan_leaving,
+            f'{brakes} min.',
+            self.realization,
+            self.overtime,
+            self.lack,
+            self.free_day_type
         ]
 
         return result
