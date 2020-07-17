@@ -1,5 +1,11 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container mt-4">
+
+        <ul>
+            {% for r in rows %}
+                <li>{{ r }}</li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}
