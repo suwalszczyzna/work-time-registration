@@ -131,6 +131,7 @@ class MonthlyReportRow:
         self.realization_hour_sec = 0
 
     def _realize_to_work_sec(self):
+        _ = self.realization
         working_hours: int = self.employee.working_hours
         working_seconds = working_hours * 3600
         realize_to_work_sec = self.realization_hour_sec - working_seconds
