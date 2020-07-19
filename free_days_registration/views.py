@@ -1,12 +1,10 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.core.paginator import Paginator
+from django.shortcuts import render, redirect
 
-from free_days_registration.models import FreeDayType, FreeDayRegistration
+from free_days_registration.models import FreeDayRegistration
 from time_registration.decorators import employee_login_required
 from time_registration.helpers import get_employee_by_user_id
-from time_registration.views import index
 from .forms import FreeDayRegisterForm
 
 

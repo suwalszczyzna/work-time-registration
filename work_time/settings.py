@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'time_registration.apps.TimeRegistrationConfig',
     'free_days_registration.apps.FreeDaysRegistrationConfig',
-    'crispy_forms'
+    'crispy_forms',
+    'reports'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

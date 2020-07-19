@@ -69,3 +69,12 @@ def round_time(dt: datetime, date_delta: timedelta, to='average') -> datetime:
             rounding = (seconds + round_to / 2) // round_to * round_to
 
     return dt + timedelta(0, rounding - seconds, - dt.microsecond)
+
+
+def get_time_registration_by(date_to_row: datetime, employee: Employee):
+    time_registrations = TimeRegistration.objects.filter(
+        date__month=date_to_row.month,
+        date__year=date_to_row.year,
+        employee_id=employee.id
+    )
+    return time_registrations

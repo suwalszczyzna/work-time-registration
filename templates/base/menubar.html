@@ -24,18 +24,31 @@
                         <span class="sr-only">(current)</span></a
                     >
                 </li>
-                <li class="nav-item mr-1">
-                    <a class="nav-link" href="{% url 'free-days-form' %}">Nowy wniosek urlopowy</a>
-                </li>
-                <li class="nav-item mr-5">
-                    <a class="nav-link" href="{% url 'free-days-form-summary' %}">Złożone wnioski</a>
-                </li>
-                {% if request.user.is_authenticated  %}
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" type="button" class="btn btn-outline-light">
-                        {{ request.user }}, wyloguj
+                <li class="nav-item dropdown mr-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Urlopy
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'free-days-form' %}">Nowy wniosek urlopowy</a>
+                        <a class="dropdown-item" href="{% url 'free-days-form-summary' %}">Złożone wnioski</a>
+                    </div>
                 </li>
+                <li class="nav-item dropdown mr-5">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Raporty
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'monthly-report' %}">Raport miesięczny</a>
+                    </div>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" type="button" class="btn btn-outline-light">
+                            {{ request.user }}, wyloguj
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
         </div>

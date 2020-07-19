@@ -10,3 +10,7 @@ body {
   border-color: var(--gray);
   color: var(--gray);
 }
+
+.monthly-report>tbody>tr>th{
+  font-weight: normal;
+}
