@@ -9,22 +9,18 @@
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
+          disabled
         >
-          Lipiec 2020
+          --
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Sierpień 2020</a>
-          <a class="dropdown-item" href="#">Wrzesień 2020</a>
-          <a class="dropdown-item" href="#">Październik 2020</a>
-        </div>
       </div>
       <div class="container pl-0 mt-4 mb-4">
         <div class="row">
           <div class="col">
-            <h5>Raport sald za lipiec 2020</h5>
+            <h5>Raport sald za {{ report_date|date:"F Y"  }}</h5>
           </div>
           <div class="col text-right">
-            <button class="btn btn-primary">
+            <button type="button" class="btn btn-primary" disabled>
               <i class="fas fa-file-download"></i> Pobierz PDF
             </button>
           </div>
