@@ -5,7 +5,6 @@ from math import fabs
 
 from django.db.models import QuerySet
 
-from free_days_registration.models import FreeDayRegistration
 from time_registration.helpers import get_time_registration_by
 from time_registration.models import Employee, TimeRegistration
 

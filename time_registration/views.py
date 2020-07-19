@@ -1,16 +1,16 @@
-from django.shortcuts import render, redirect
+from datetime import datetime, timedelta
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.urls import reverse
-from django.utils import timezone
-from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+from django.utils import timezone
 
-from .forms import CreateUserForm, CorrectionForm
+from .decorators import employee_login_required, unauthenticated_user
+from .forms import CreateUserForm
 from .helpers import plan_leaving_hours, get_employee_by_user_id, is_register_owner, plan_leaving_hour_with_brakes, \
     round_time
-from .models import TimeRegistration, Employee
-from .decorators import employee_login_required, unauthenticated_user
+from .models import TimeRegistration
 
 
 @employee_login_required
