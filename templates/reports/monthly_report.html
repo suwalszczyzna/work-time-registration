@@ -1,56 +1,89 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container-sm card mt-4 pt-4">
-      <div class="dropdown">
-        <button
-          class="btn btn-secondary dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          disabled
-        >
-          --
-        </button>
-      </div>
-      <div class="container pl-0 mt-4 mb-4">
-        <div class="row">
-          <div class="col">
-            <h5>Raport sald za {{ report_date|date:"F Y"  }}</h5>
-          </div>
-          <div class="col text-right">
-            <button type="button" class="btn btn-primary" disabled>
-              <i class="fas fa-file-download"></i> Pobierz PDF
+        <div class="dropdown">
+            <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    disabled
+            >
+                --
             </button>
-          </div>
         </div>
-      </div>
-      <table class="table table-hover table-responsive monthly-report">
-        <thead>
-          <tr>
-            <th scope="col">Data</th>
-            <th scope="col">Przyjście</th>
-            <th scope="col">Wyjście</th>
-            <th scope="col">Plan. wyjścia</th>
-            <th scope="col">Przerwy</th>
-            <th scope="col">Realizacja</th>
-            <th scope="col">Nadgodziny</th>
-            <th scope="col">Braki</th>
-            <th scope="col">Planowana nieobecność</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for row in rows %}
-          <tr>
-              {% for r in row %}
-                <td>{{ r }}</td>
-              {% endfor %}
-          </tr>
+        <div class="container pl-0 mt-4 mb-4">
+            <div class="row">
+                <div class="col">
+                    <h5>Raport sald za {{ report_date|date:"F Y" }}</h5>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-primary" disabled>
+                        <i class="fas fa-file-download"></i> Pobierz PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-responsive monthly-report">
+            <thead>
+            <tr>
+                <th scope="col">Data</th>
+                <th scope="col">Przyjście</th>
+                <th scope="col">Wyjście</th>
+                <th scope="col">Plan. wyjścia</th>
+                <th scope="col">Przerwy</th>
+                <th scope="col">Realizacja</th>
+                <th scope="col">Nadgodziny</th>
+                <th scope="col">Braki</th>
+                <th scope="col">Planowana nieobecność</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for MonthlyReportRow in report_rows %}
+                {% if MonthlyReportRow.free_day_type %}
+                    <tr class="table-success">
+                        <td>{{ MonthlyReportRow.date }}</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td>{{ MonthlyReportRow.free_day_type }}</td>
+                    </tr>
+                {% elif MonthlyReportRow.worked_day %}
+                    <tr>
+                        <td>{{ MonthlyReportRow.date }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.arrival }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.leaving }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.plan_leaving }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.brakes }}</td>
+                        <td>{{ MonthlyReportRow.realization_time }}</td>
+                        <td>{{ MonthlyReportRow.overtime }}</td>
+                        <td>{{ MonthlyReportRow.lack }}</td>
+                        <td> -</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ MonthlyReportRow.date }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.arrival }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.leaving }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.plan_leaving }}</td>
+                        <td>{{ MonthlyReportRow.time_reg.brakes }}</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                        <td> -</td>
+                    </tr>
+                {% endif %}
 
-        {% endfor %}
-        </tbody>
-      </table>
+
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}
