@@ -32,7 +32,7 @@ class MonthlyReport(Report):
         max_day = monthrange(self.report_date.year, self.report_date.month)[1]
 
         for day in range(1, max_day + 1):
-            _date_to_row: datetime = date(self.report_date.year, self.report_date.month, day)
+            _date_to_row: datetime = datetime(self.report_date.year, self.report_date.month, day)
 
             _time_registrations = get_time_registration_by(_date_to_row, self.report_row_generator.employee)
             _tr: TimeRegistration = _time_registrations.filter(date__exact=_date_to_row).first()
@@ -87,7 +87,7 @@ class MonthlyReportRow:
     def free_day_type(self):
         _free_day_type = '-'
         for fdr in self.free_day_reg_set:
-            if fdr.start_date <= self.date <= fdr.end_date:
+            if fdr.start_date <= self.date.date() <= fdr.end_date:
                 _free_day_type = fdr.free_day_type
         return _free_day_type
 
