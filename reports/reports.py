@@ -13,7 +13,7 @@ from time_registration.models import Employee, TimeRegistration
 class MonthlyReport:
 
     def __init__(
-            self, 
+            self,
             free_day_registrations: QuerySet,
             emp: Employee,
             report_date: datetime,
@@ -25,7 +25,6 @@ class MonthlyReport:
         self.generate_rows()
 
     def generate_rows(self):
-
         max_day = monthrange(self.report_date.year, self.report_date.month)[1]
 
         for day in range(1, max_day + 1):
@@ -44,7 +43,6 @@ class MonthlyReportRow:
         self.time_reg = _time_reg
         self.free_day_reg_set = _free_day_reg_set
         self.employee = _emp
-        self.realization_hour_sec = None
         self.realization_time = None
         self.overtime = None
         self.lack = None
@@ -54,35 +52,47 @@ class MonthlyReportRow:
         self.update_values()
 
     def update_values(self, ):
-        self.reset_values()
-        self.overtime = self.calc_overtime()
         self.realization_time = self.calc_realization_time()
+        self.overtime = self.calc_overtime()
         self.lack = self.calc_lack()
         self.free_day_type = self.calc_free_day_type()
         self.worked_day = self.is_worked_day()
 
     def calc_realization_time(self) -> time:
-        if isinstance(self.time_reg, TimeRegistration) and self.time_reg.arrival and self.time_reg.leaving:
-            duration = datetime(
-                1, 1, 1, self.time_reg.leaving.hour, self.time_reg.leaving.minute
-            ) - datetime(
-                1, 1, 1, self.time_reg.arrival.hour, self.time_reg.arrival.minute
-            )
-            self.realization_hour_sec = duration.total_seconds()
-            days = divmod(self.realization_hour_sec, 86400)  # Get days (without [0]!)
+        realization_seconds = self.calc_realization_time_seconds()
+        if realization_seconds:
+            days = divmod(realization_seconds, 86400)  # Get days (without [0]!)
             hours = divmod(days[1], 3600)  # Use remainder of days to calc hours
             minutes = divmod(hours[1], 60)  # Use remainder of hours to calc minutes
             return time(int(hours[0]), int(minutes[0]))
         return time()
 
+    def calc_realization_time_seconds(self) -> float:
+        """
+        Difference between leaving time and arrival time
+        :return:total_seconds
+        """
+        if isinstance(self.time_reg, TimeRegistration) and self.time_reg.arrival and self.time_reg.leaving:
+            leaving: datetime = datetime(
+                    1, 1, 1, self.time_reg.leaving.hour, self.time_reg.leaving.minute
+                )
+
+            arrival: datetime = datetime(
+                        1, 1, 1, self.time_reg.arrival.hour, self.time_reg.arrival.minute
+                    )
+
+            duration: timedelta = leaving - arrival
+            return duration.total_seconds()
+        return float(0)
+
     def calc_overtime(self) -> timedelta:
-        dif_realize_to_work_sec = self._realize_to_work_sec()
+        dif_realize_to_work_sec = self.subtract_realization_time_and_work_time()
         if dif_realize_to_work_sec > 0:
             return timedelta(seconds=dif_realize_to_work_sec)
         return timedelta(seconds=0)
 
     def calc_lack(self) -> timedelta:
-        dif_realize_to_work_sec = self._realize_to_work_sec()
+        dif_realize_to_work_sec = self.subtract_realization_time_and_work_time()
         if dif_realize_to_work_sec < 0:
             return timedelta(seconds=fabs(dif_realize_to_work_sec))
         return timedelta(seconds=0)
@@ -100,12 +110,12 @@ class MonthlyReportRow:
         else:
             return False
 
-    def reset_values(self):
-        self.realization_hour_sec = 0
+    def subtract_realization_time_and_work_time(self):
+        realization_seconds = self.calc_realization_time_seconds()
+        realize_to_work_sec = realization_seconds - self.get_working_hours_seconds()
+        return realize_to_work_sec
 
-    def _realize_to_work_sec(self):
-        _ = self.realization_time
+    def get_working_hours_seconds(self):
         working_hours: int = self.employee.working_hours
         working_seconds = working_hours * 3600
-        realize_to_work_sec = self.realization_hour_sec - working_seconds
-        return realize_to_work_sec
+        return working_seconds
