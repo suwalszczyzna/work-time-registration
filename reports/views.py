@@ -3,11 +3,13 @@ from datetime import datetime
 from django.shortcuts import render
 
 from free_days_registration.helpers import get_free_day_registrations_by
+from time_registration.decorators import employee_login_required
 from time_registration.helpers import get_employee_by_user_id
 from time_registration.models import Employee
 from .reports import MonthlyReport, Report
 
 
+@employee_login_required
 def monthly_report_view(request):
 
     employee: Employee = get_employee_by_user_id(request.user.id)
