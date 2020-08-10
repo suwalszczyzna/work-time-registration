@@ -6,7 +6,7 @@ from free_days_registration.helpers import get_free_day_registrations_by
 from time_registration.decorators import employee_login_required
 from time_registration.helpers import get_employee_by_user_id
 from time_registration.models import Employee
-from .reports import MonthlyReport
+from .models import MonthlyReport
 
 
 @employee_login_required
