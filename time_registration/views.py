@@ -75,16 +75,19 @@ def correction(request, pk):
             arrival = request.POST.get('arrival')
             leaving = request.POST.get('leaving')
 
-            if (arrival and leaving) and arrival > leaving:
+            if arrival > leaving and leaving:
                 messages.error(request, 'Godzina wyjścia nie może być późniejsza niż przyjście')
-            else:
-                if arrival:
-                    time_registration.arrival = arrival
-                if leaving:
-                    time_registration.leaving = leaving
 
-                time_registration.save()
-                return redirect('home')
+            if arrival:
+                time_registration.arrival = datetime.strptime(arrival, '%H:%M').time()
+
+            if leaving:
+                time_registration.leaving = datetime.strptime(leaving, '%H:%M').time()
+
+            time_registration.plan_leaving = plan_leaving_hour_with_brakes(time_registration)
+            time_registration.save()
+
+            return redirect('home')
         elif 'delete' in request.POST:
             time_registration.delete()
             return redirect('home')
