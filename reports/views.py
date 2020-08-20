@@ -21,4 +21,4 @@ def monthly_report_view(request):
         'report_date': report_date,
         'report_rows': month_report.report_rows
     }
-    return render(request, 'reports/monthly_report.html', context)
+    return render(request, 'reports/monthly_report/monthly_report.html', context)

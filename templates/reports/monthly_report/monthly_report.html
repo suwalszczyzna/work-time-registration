@@ -21,7 +21,7 @@
                 </div>
                 <div class="col text-right">
                     <button type="button" class="btn btn-primary" disabled>
-                        <i class="fas fa-file-download"></i> Pobierz PDF
+                        Pobierz PDF
                     </button>
                 </div>
             </div>
@@ -45,42 +45,19 @@
             {% for MonthlyReportRow in report_rows %}
                 {% if MonthlyReportRow.free_day_type %}
                     <tr class="table-success">
-                        <td>{{ MonthlyReportRow.date }}</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td>{{ MonthlyReportRow.free_day_type }}</td>
-                    </tr>
-                {% elif MonthlyReportRow.worked_day %}
+                        {% else %}
                     <tr>
-                        <td>{{ MonthlyReportRow.date }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.arrival }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.leaving }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.plan_leaving }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.brakes }} min</td>
-                        <td>{{ MonthlyReportRow.realization_time }}</td>
-                        <td>{{ MonthlyReportRow.overtime }}</td>
-                        <td>{{ MonthlyReportRow.lack }}</td>
-                        <td> -</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>{{ MonthlyReportRow.date }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.arrival }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.leaving }}</td>
-                        <td>{{ MonthlyReportRow.time_reg.plan_leaving }}</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                        <td> -</td>
-                    </tr>
                 {% endif %}
-
+                <td>{{ MonthlyReportRow.date|date:"d-m-Y" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.arrival|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.leaving|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.plan_leaving|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.brakes|default:"0" }} min</td>
+                <td>{{ MonthlyReportRow.realization_time|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.overtime|default:"0:00:00" }}</td>
+                <td>{{ MonthlyReportRow.lack|default:"0:00:00" }}</td>
+                <td>{{ MonthlyReportRow.free_day_type|default:"-" }}</td>
+            </tr>
 
             {% endfor %}
             </tbody>
