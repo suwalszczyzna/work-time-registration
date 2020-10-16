@@ -17,12 +17,16 @@
         <div class="container pl-0 mt-4 mb-4">
             <div class="row">
                 <div class="col">
+                    <h3>{{ employee }}</h3>
                     <h5>Raport sald za {{ report_date|date:"F Y" }}</h5>
                 </div>
                 <div class="col text-right">
-                    <button type="button" class="btn btn-primary" disabled>
-                        Pobierz PDF
-                    </button>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="download_report"class="btn btn-primary">
+                            Pobierz PDF
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -48,15 +52,15 @@
                         {% else %}
                     <tr>
                 {% endif %}
-                <td>{{ MonthlyReportRow.date|date:"d-m-Y" }}</td>
-                <td>{{ MonthlyReportRow.time_reg.arrival|default:"-" }}</td>
-                <td>{{ MonthlyReportRow.time_reg.leaving|default:"-" }}</td>
-                <td>{{ MonthlyReportRow.time_reg.plan_leaving|default:"-" }}</td>
-                <td>{{ MonthlyReportRow.time_reg.brakes|default:"0" }} min</td>
-                <td>{{ MonthlyReportRow.realization_time|default:"-" }}</td>
-                <td>{{ MonthlyReportRow.overtime|default:"0:00:00" }}</td>
-                <td>{{ MonthlyReportRow.lack|default:"0:00:00" }}</td>
-                <td>{{ MonthlyReportRow.free_day_type|default:"-" }}</td>
+            <td>{{ MonthlyReportRow.date|date:"d-m-Y" }}</td>
+            <td>{{ MonthlyReportRow.time_reg.arrival|default:"-" }}</td>
+            <td>{{ MonthlyReportRow.time_reg.leaving|default:"-" }}</td>
+            <td>{{ MonthlyReportRow.time_reg.plan_leaving|default:"-" }}</td>
+            <td>{{ MonthlyReportRow.time_reg.brakes|default:"0" }} min</td>
+            <td>{{ MonthlyReportRow.realization_time|default:"-" }}</td>
+            <td>{{ MonthlyReportRow.overtime|default:"0:00:00" }}</td>
+            <td>{{ MonthlyReportRow.lack|default:"0:00:00" }}</td>
+            <td>{{ MonthlyReportRow.free_day_type|default:"-" }}</td>
             </tr>
 
             {% endfor %}

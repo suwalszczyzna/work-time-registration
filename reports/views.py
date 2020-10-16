@@ -6,12 +6,13 @@ from free_days_registration.helpers import get_free_day_registrations_by
 from time_registration.decorators import employee_login_required
 from time_registration.helpers import get_employee_by_user_id
 from time_registration.models import Employee
+from .generators import PdfGenerator, FileNameGenerator
 from .models import MonthlyReport
+from django.core.handlers.wsgi import WSGIRequest
 
 
 @employee_login_required
-def monthly_report_view(request):
-
+def monthly_report_view(request: WSGIRequest):
     employee: Employee = get_employee_by_user_id(request.user.id)
     free_day_registrations = get_free_day_registrations_by(employee)
     report_date = datetime.now()
@@ -19,6 +20,19 @@ def monthly_report_view(request):
 
     context = {
         'report_date': report_date,
-        'report_rows': month_report.report_rows
+        'report_rows': month_report.report_rows,
+        'employee': employee.user.get_full_name()
     }
+
+    if 'download_report' in request.POST:
+        file_name = 'raport_{}-{}'.format(context.get('employee'), context.get('report_date'))
+        fg = FileNameGenerator(file_name).generate()
+
+        pdf_generator: PdfGenerator = PdfGenerator(
+            fg,
+            '../templates/reports/monthly_report/monthly_report_pdf.html'
+        )
+
+        return pdf_generator.generate(context)
+
     return render(request, 'reports/monthly_report/monthly_report.html', context)

@@ -1,0 +1,99 @@
+<!DOCTYPE>
+<html lang="pl">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta charset="UTF-8">
+        <title>Raport miesięczny - {{ employee }} - {{ report_date|date:"F Y" }}</title>
+        <style>
+            @font-face {
+                font-family: 'Roboto';
+                src: url(static\fonts\Roboto-Regular.ttf);
+            }
+            body{
+                font-family: 'Roboto', sans-serif;
+            }
+            tr{
+                padding: 2px;
+                border-bottom: solid 1px #e2e2e2;
+                text-align: center;
+            }
+
+            td{
+                vertical-align: central;
+            }
+            @page {
+                size: a4 portrait;
+                @frame header_frame { /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 40pt;
+                width: 512pt;
+                top: 50pt;
+                height: 40pt;
+            }
+            @frame content_frame {
+                /* Content Frame */
+            left: 40pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {
+                /* Another static Frame */
+            -pdf-frame-content:footer_content;
+            left: 50pt; width: 512pt; top: 792pt; height: 20pt;
+            }
+            }
+        </style>
+    </head>
+    <body>
+
+    {% block content %}
+        <div>
+
+            <div id="header_content">
+                <div class="row">
+                    <div class="col">
+                        <h3>Pracownik: {{ employee }}</h3>
+                        <h2>Raport sald za {{ report_date|date:"F Y" }}</h2>
+                    </div>
+                </div>
+            </div>
+            <table>
+                <caption>Raport miesięczny</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Przyjście</th>
+                    <th scope="col">Wyjście</th>
+                    <th scope="col">Plan. wyjścia</th>
+                    <th scope="col">Przerwy</th>
+                    <th scope="col">Realizacja</th>
+                    <th scope="col">Nadgodziny</th>
+                    <th scope="col">Braki</th>
+                    <th scope="col">Planowana nieobecność</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for MonthlyReportRow in report_rows %}
+                    {% if MonthlyReportRow.free_day_type %}
+                        <tr class="table-success">
+                            {% else %}
+                        <tr>
+                    {% endif %}
+                <td>{{ MonthlyReportRow.date|date:"d-m-Y" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.arrival|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.leaving|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.plan_leaving|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.time_reg.brakes|default:"0" }} min</td>
+                <td>{{ MonthlyReportRow.realization_time|default:"-" }}</td>
+                <td>{{ MonthlyReportRow.overtime|default:"0:00:00" }}</td>
+                <td>{{ MonthlyReportRow.lack|default:"0:00:00" }}</td>
+                <td>{{ MonthlyReportRow.free_day_type|default:"-" }}</td>
+                </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="footer_content">Wydrukowano: {{ report_date }} z systemu Czas Pracy
+        </div>
+    {% endblock %}
+    </body>
+</html>
