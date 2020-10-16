@@ -1,8 +1,5 @@
-from django.db import models
-
-from abc import ABC, abstractmethod
 from calendar import monthrange
-from datetime import datetime, time, timedelta, date
+from datetime import datetime, time, timedelta
 from math import fabs
 
 from django.db.models import QuerySet
