@@ -11,7 +11,10 @@ from .forms import FreeDayRegisterForm
 @employee_login_required
 def free_days_form_summary_view(request):
     current_user_id = request.user.id
-    free_days_registrations = FreeDayRegistration.objects.filter(employee__user_id__exact=current_user_id)
+    free_days_registrations = FreeDayRegistration\
+        .objects\
+        .order_by('start_date')\
+        .filter(employee__user_id__exact=current_user_id)
 
     paginator = Paginator(free_days_registrations, 10)
 
