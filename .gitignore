@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 .DS_Store
-static/
 templates/.DS_Store
 templates/layout/
 time_registration/migrations/0004_auto_20200501_1711.py
