@@ -52,16 +52,23 @@ class MonthlyReportRow:
 
         self.update_values()
 
-    def is_holiday_or_weekend(self):
-        return self.date in holidays.PL() or self.date.weekday() in [5, 6]
-
     def update_values(self, ):
-        self.realization_time = self.calc_realization_time()
-        self.overtime = self.calc_overtime()
-        self.lack = self.calc_lack()
+        self.holiday = self.is_holiday_or_weekend()
         self.free_day_type = self.calc_free_day_type()
         self.worked_day = self.is_worked_day()
-        self.holiday = self.is_holiday_or_weekend()
+        if self.can_be_reported():
+            self.realization_time = self.calc_realization_time()
+            self.overtime = self.calc_overtime()
+            self.lack = self.calc_lack()
+
+    def can_be_reported(self):
+        return not self.free_day_type and not (self.holiday and not self.worked_day)
+
+    def is_holiday_or_weekend(self):
+        return self.date in holidays.PL() or self.is_weekend()
+
+    def is_weekend(self):
+        return self.date.weekday() in [5, 6]
 
     def calc_realization_time(self) -> time:
         realization_seconds = self.calc_realization_time_seconds()
