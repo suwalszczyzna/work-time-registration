@@ -49,7 +49,9 @@
             {% for MonthlyReportRow in report_rows %}
                 {% if MonthlyReportRow.free_day_type %}
                     <tr class="table-success">
-                        {% else %}
+                {% elif MonthlyReportRow.holiday %}
+                    <tr class="table-secondary">
+                {% else %}
                     <tr>
                 {% endif %}
             <td>{{ MonthlyReportRow.date|date:"d-m-Y" }}</td>

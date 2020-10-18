@@ -1,6 +1,7 @@
 from calendar import monthrange
 from datetime import datetime, time, timedelta
 from math import fabs
+import holidays
 
 from django.db.models import QuerySet
 
@@ -47,8 +48,12 @@ class MonthlyReportRow:
         self.lack = None
         self.free_day_type = None
         self.worked_day = None
+        self.holiday = False
 
         self.update_values()
+
+    def is_holiday_or_weekend(self):
+        return self.date in holidays.PL() or self.date.weekday() in [5, 6]
 
     def update_values(self, ):
         self.realization_time = self.calc_realization_time()
@@ -56,6 +61,7 @@ class MonthlyReportRow:
         self.lack = self.calc_lack()
         self.free_day_type = self.calc_free_day_type()
         self.worked_day = self.is_worked_day()
+        self.holiday = self.is_holiday_or_weekend()
 
     def calc_realization_time(self) -> time:
         realization_seconds = self.calc_realization_time_seconds()
