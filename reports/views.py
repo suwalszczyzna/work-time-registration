@@ -43,6 +43,8 @@ def create_context(employee: Employee, month_report: MonthlyReport, report_date:
     context = {
         'report_date': report_date,
         'report_rows': month_report.report_rows,
-        'employee': employee.user.get_full_name()
+        'employee': employee.user.get_full_name(),
+        'overtime': month_report.get_overtime(),
+        'lack': month_report.get_lack()
     }
     return context
