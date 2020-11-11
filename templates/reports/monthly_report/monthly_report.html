@@ -1,19 +1,14 @@
 {% extends 'base/base.html' %}
 {% block content %}
     <div class="container-sm card mt-4 pt-4">
-        <div class="dropdown">
-            <button
-                    class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    disabled
-            >
-                --
-            </button>
-        </div>
+        <form class="form-group row" method="POST">
+            {% csrf_token %}
+          <label for="date-input" class="col-2 col-form-label">Data raportu</label>
+          <div class="col-2">
+            <input class="form-control" type="date" id="date-input" name="date-input">
+          </div>
+            <button class="btn btn-primary" type="submit" name="apply-date">Zatwierdź datę</button>
+        </form>
         <div class="container pl-0 mt-4 mb-4">
             <div class="row">
                 <div class="col">
@@ -23,7 +18,7 @@
                 <div class="col text-right">
                     <form method="POST">
                         {% csrf_token %}
-                        <button type="submit" name="download_report"class="btn btn-primary">
+                        <button type="submit" name="download_report" class="btn btn-primary">
                             Pobierz PDF
                         </button>
                     </form>

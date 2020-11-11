@@ -18,11 +18,7 @@ def monthly_report_view(request: WSGIRequest):
     report_date = datetime.now()
     month_report: MonthlyReport = MonthlyReport(free_day_registrations, employee, report_date)
 
-    context = {
-        'report_date': report_date,
-        'report_rows': month_report.report_rows,
-        'employee': employee.user.get_full_name()
-    }
+    context = create_context(employee, month_report, report_date)
 
     if 'download_report' in request.POST:
         file_name = 'raport_{}-{}'.format(context.get('employee'), context.get('report_date'))
@@ -34,5 +30,19 @@ def monthly_report_view(request: WSGIRequest):
         )
 
         return pdf_generator.generate(context)
+    elif 'apply-date' in request.POST:
+        new_report_date_raw = request.POST.get('date-input')
+        report_date = datetime.strptime(new_report_date_raw, '%Y-%m-%d')
+        month_report = MonthlyReport(free_day_registrations, employee, report_date)
+        context = create_context(employee, month_report, report_date)
 
     return render(request, 'reports/monthly_report/monthly_report.html', context)
+
+
+def create_context(employee: Employee, month_report: MonthlyReport, report_date: datetime):
+    context = {
+        'report_date': report_date,
+        'report_rows': month_report.report_rows,
+        'employee': employee.user.get_full_name()
+    }
+    return context
